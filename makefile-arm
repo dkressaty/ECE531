@@ -1,0 +1,25 @@
+BUILDROOT_HOME=/home/dkressaty/buildroot-2022.05
+
+CC=$(BUILDROOT_HOME)/output/host/usr/bin/arm-linux-gcc
+CCFLAGS=--sysroot=$(BUILDROOT_HOME)/output/staging
+INCLUDES=
+LFLAGS=
+
+LIBS=-lcurl -uClibc -lc
+
+SRC=requestor.c
+OBJ=$(SRC:.c=.o)
+MAIN=test
+
+RM=rm -rf
+
+.c.o:
+	$(CC) $(CCFLAGS) $(INCLUDES) -c $< -o $@
+
+$(MAIN): $(OBJ)
+	$(CC) $(CCFLAGS) $(INCLUDES) -o $(MAIN) $(OBJ) $(LFLAGS) $(LIBS)
+
+all: $(MAIN)
+
+clean:
+	$(RM) $(MAIN) *.o *~
